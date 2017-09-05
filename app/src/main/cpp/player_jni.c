@@ -2,33 +2,27 @@
 
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
-#include "player_jni.h"
+#include "android/native_window.h"
+#include "android/native_window_jni.h"
 
-JNIEXPORT jstring JNICALL
-Java_think_reed_rfplayer_MainActivity_stringFromFFmpeg(JNIEnv *env, jobject instance) {
 
-    // TODO
-    char info[10000] = {0};
-    sprintf(info, "the result is %d\n", open_ffmpeg());
+AVFormatContext *pFormatCtx = NULL;
+int i, videoStream;
+AVCodecParameters *pCodecParam;
+AVCodecContext *pCodecCtx;
+AVFrame *pFrame;
+AVFrame *pFrameRGBA = NULL;
+AVPacket *packet;
+int frameFinished;
+int numBytes;
+uint8_t *buffer;
 
-    return (*env)->NewStringUTF(env, info);
-}
+int native_init(JNIEnv *pEnv, jobject pObj, jstring pPath) {
 
-int open_ffmpeg() {
-
-    AVFormatContext *pFormatCtx = NULL;
-    int i, videoStream;
-    AVCodecParameters *pCodecParam;
-    AVCodecContext *pCodecCtx;
     AVCodec *pCodec;
-    AVFrame *pFrame;
-    AVFrame *pFrameYUV;
-    AVPacket *packet;
-    int frameFinished;
-    int numBytes;
-    uint8_t *buffer;
 
-    char filePath[] = "/sdcard/video/dcw.mp4";
+
+    char *pFilePath = (char *) (*pEnv)->GetStringUTFChars(pEnv, pPath, NULL);
 
     //register all codecs
     av_register_all();
@@ -38,7 +32,7 @@ int open_ffmpeg() {
 
     pFormatCtx = avformat_alloc_context();
 
-    if (avformat_open_input(pFormatCtx, filePath, NULL, NULL) != 0) {
+    if (avformat_open_input(&pFormatCtx, pFilePath, NULL, NULL) != 0) {
         return -1;
     }
 
@@ -75,11 +69,11 @@ int open_ffmpeg() {
 
     pFrame = av_frame_alloc();
 
-    pFrameYUV = av_frame_alloc();
+    pFrameRGBA = av_frame_alloc();
 
-    packet = (AVPacket*) av_malloc(sizeof(AVPacket));
-
-
+    if (pFrameRGBA == NULL) {
+        return -1;
+    }
 
     return 0;
 }
