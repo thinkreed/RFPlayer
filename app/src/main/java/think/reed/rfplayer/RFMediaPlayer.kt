@@ -5,31 +5,15 @@ package think.reed.rfplayer
  */
 class RFMediaPlayer {
 
-    fun play() {
-        nativePlay()
-    }
-
-    fun pause() {
-        nativePause()
-    }
-
-    fun stop() {
-        nativeStop()
-    }
-
     fun init(path: String) {
         nativeInit(path)
     }
 
-    fun setSurface() {
-
+    fun decode() {
+        nativeDecode()
     }
 
     external fun nativeInit(path: String): Int
 
-    external fun nativeStop()
-
-    external fun nativePlay()
-
-    external fun nativePause()
+    external fun nativeDecode():Int
 }

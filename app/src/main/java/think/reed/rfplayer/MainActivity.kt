@@ -9,6 +9,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val player = RFMediaPlayer()
+        player.init("/sdcard/music/qhc.mp3")
+        player.decode()
     }
 
     external fun stringFromFFmpeg(): String
