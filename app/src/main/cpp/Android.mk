@@ -36,14 +36,6 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 TARGET_ARCH_ABI := armeabi-v7a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
-LOCAL_MODULE    := postproc
-LOCAL_SRC_FILES := libpostproc.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-# prepare libX
-include $(CLEAR_VARS)
-TARGET_ARCH_ABI := armeabi-v7a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_MODULE    := swresample
 LOCAL_SRC_FILES := libswresample.a
 include $(PREBUILT_STATIC_LIBRARY)
@@ -65,7 +57,7 @@ LOCAL_SRC_FILES  := player_jni.c
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
 LOCAL_CFLAGS     := -D__STDC_CONSTANT_MACROS -Wno-sign-compare -Wno-switch -Wno-pointer-sign -DHAVE_NEON=1 -mfpu=neon -mfloat-abi=softfp -fPIC -DANDROID
 
-LOCAL_STATIC_LIBRARIES := avfilter avformat avcodec postproc swresample swscale avutil
+LOCAL_STATIC_LIBRARIES := avfilter avformat avcodec swresample swscale avutil
 LOCAL_LDLIBS     := -L$(NDK_ROOT)/platforms/$(APP_PLATFORM)/arch-arm/usr/lib -L$(LOCAL_PATH) -llog -ljnigraphics -lz -ldl
 
 

@@ -5,8 +5,8 @@ package think.reed.rfplayer
  */
 class RFMediaPlayer {
 
-    fun init(path: String) {
-        nativeInit(path)
+    fun init(path: String): Int {
+        return nativeInit(path)
     }
 
     fun decode() {
@@ -15,5 +15,5 @@ class RFMediaPlayer {
 
     external fun nativeInit(path: String): Int
 
-    external fun nativeDecode():Int
+    external fun nativeDecode(): Int
 }

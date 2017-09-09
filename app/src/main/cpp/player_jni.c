@@ -24,7 +24,7 @@ uint8_t *data = NULL;
 int dataSize;
 char *pFilePath = NULL;
 
-int native_init(JNIEnv *pEnv, jobject pObj, jstring pPath) {
+int Java_think_reed_rfplayer_RFMediaPlayer_nativeInit(JNIEnv *pEnv, jobject pObj, jstring pPath) {
 
     init_codec(pEnv, pObj, pPath);
 
@@ -39,16 +39,18 @@ int native_init(JNIEnv *pEnv, jobject pObj, jstring pPath) {
     return 0;
 }
 
-int native_decode() {
+int Java_think_reed_rfplayer_RFMediaPlayer_nativeDecode() {
     int ret;
-    while (av_read_frame(pFormatCtx, pPacket) > 0) {
-        ret = avcodec_send_packet(pCodecCtx, pPacket);
-        if (ret < 0) {
-            return -1;
-        }
-
-        return receiveOutFrame(ret);
-    }
+    av_read_frame(pFormatCtx, pPacket);
+//    while (av_read_frame(pFormatCtx, pPacket) > 0) {
+//        ret = avcodec_send_packet(pCodecCtx, pPacket);
+//        if (ret < 0) {
+//            return -1;
+//        }
+//
+//        return receiveOutFrame(ret);
+//    }
+    return 0;
 }
 
 int receiveOutFrame(int ret) {
@@ -128,48 +130,28 @@ int init_codec(JNIEnv *pEnv, jobject pObj, jstring pPath) {
 }
 
 int open_codec() {
-//    pCodecParam = pFormatCtx->streams[audioStream]->codecpar;
-//
-//    pCodec = avcodec_find_decoder(pCodecParam->codec_id);
-//
-//    if (pCodec == NULL) {
-//        return -1;
-//    }
-//
-//    pParserCtx = av_parser_init(pCodec->id);
-//
-//    if (!pParserCtx) {
-//        return -1;
-//    }
-//
-//    pCodecCtx = avcodec_alloc_context3(pCodec);
-//
-//    if (pCodecCtx == NULL) {
-//        return -1;
-//    }
-//
-//    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
-//        return -1;
-//    }
-    return 0;
-}
+    pCodecParam = pFormatCtx->streams[audioStream]->codecpar;
 
-jint JNI_OnLoad(JavaVM *pVm, void *reserved) {
-    JNIEnv *env;
-    if ((*pVm)->GetEnv(pVm, (void **) &env, JNI_VERSION_1_6) != JNI_OK) {
+    pCodec = avcodec_find_decoder(pCodecParam->codec_id);
+
+    if (pCodec == NULL) {
         return -1;
     }
-    JNINativeMethod nm[8];
-    nm[0].name = "nativeInit";
-    nm[0].signature = "(Ljava/lang/String;)I";
-    nm[0].fnPtr = (void *) native_init;
 
-    nm[4].name = "nativeDecode";
-    nm[4].signature = "()I";
-    nm[4].fnPtr = (void *) native_decode;
+    pParserCtx = av_parser_init(pCodec->id);
 
-    jclass cls = (*env)->FindClass(env, "think/reed/rfplayer/RFMediaPlayer");
-    //Register methods with env->RegisterNatives.
-    (*env)->RegisterNatives(env, cls, nm, 6);
-    return JNI_VERSION_1_6;
+    if (!pParserCtx) {
+        return -1;
+    }
+
+    pCodecCtx = avcodec_alloc_context3(pCodec);
+
+    if (pCodecCtx == NULL) {
+        return -1;
+    }
+
+    if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
+        return -1;
+    }
+    return 0;
 }
