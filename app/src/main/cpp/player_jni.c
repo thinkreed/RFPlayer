@@ -42,14 +42,14 @@ int Java_think_reed_rfplayer_RFMediaPlayer_nativeInit(JNIEnv *pEnv, jobject pObj
 int Java_think_reed_rfplayer_RFMediaPlayer_nativeDecode() {
     int ret;
     av_read_frame(pFormatCtx, pPacket);
-//    while (av_read_frame(pFormatCtx, pPacket) > 0) {
-//        ret = avcodec_send_packet(pCodecCtx, pPacket);
-//        if (ret < 0) {
-//            return -1;
-//        }
-//
-//        return receiveOutFrame(ret);
-//    }
+    while (av_read_frame(pFormatCtx, pPacket) > 0) {
+        ret = avcodec_send_packet(pCodecCtx, pPacket);
+        if (ret < 0) {
+            return -1;
+       }
+
+        return receiveOutFrame(ret);
+    }
     return 0;
 }
 

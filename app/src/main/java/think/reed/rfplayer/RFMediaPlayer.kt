@@ -1,5 +1,7 @@
 package think.reed.rfplayer
 
+import android.util.Log
+
 /**
  * Created by thinkreed on 2017/9/5.
  */
@@ -10,7 +12,7 @@ class RFMediaPlayer {
     }
 
     fun decode() {
-        nativeDecode()
+        Log.e("thinkreed", "the result is " + nativeDecode())
     }
 
     external fun nativeInit(path: String): Int
