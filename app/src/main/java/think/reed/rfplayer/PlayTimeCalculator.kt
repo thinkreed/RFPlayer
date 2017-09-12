@@ -5,13 +5,13 @@ package think.reed.rfplayer
  */
 class PlayTimeCalculator {
 
-    private var mStartTime:Long = 0;
+    private var mStartTime: Long = 0;
 
     fun startCount() {
         mStartTime = System.currentTimeMillis()
     }
 
-    fun getPlayTime() :Long{
+    fun getPlayTime(): Long {
         return System.currentTimeMillis() - mStartTime
     }
 }

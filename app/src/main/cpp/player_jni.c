@@ -76,12 +76,14 @@ void release() {
 int find_audio_stream() {
     audioStream = -1;
 
-    for (i = 0; i < pFormatCtx->nb_streams; i++) {
-        if (pFormatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
-            audioStream = i;
-            break;
-        }
-    }
+
+//    for (i = 0; i < pFormatCtx->nb_streams; i++) {
+//        if (pFormatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+//            audioStream = i;
+//            break;
+//        }
+//    }
+    audioStream = av_find_best_stream(pFormatCtx,  AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0);
 
     if (audioStream == -1) {
         return -1;
