@@ -16,6 +16,10 @@ class RFMediaPlayer {
         Log.e("thinkreed", "the result is " + nativeDecode())
     }
 
+    fun getAudioTrack():AudioTrack {
+        return mAudioTrack
+    }
+
     private fun initAudioTrack() {
         val channelCount = if (nativeGetChannelCount() == 1) AudioFormat.CHANNEL_OUT_MONO else AudioFormat.CHANNEL_OUT_STEREO
         val audioMinBufSize = AudioTrack.getMinBufferSize(nativeGetSampleRate(), channelCount, AudioFormat.ENCODING_PCM_16BIT)
