@@ -13,11 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkPermission()
-        val player = RFMediaPlayer()
-
-        if (player.init("/sdcard/music/qhc.mp3") >= 0) {
-            player.decode()
-        }
     }
 
     private fun checkPermission() {
@@ -33,8 +28,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    external fun stringFromFFmpeg(): String
 
     companion object {
 
